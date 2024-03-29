@@ -1,5 +1,5 @@
 import React from "react";
-import { ErrorProps } from "../types";
+import { ErrorProps } from "../../types";
 
 function Error({ fieldName, errors }: ErrorProps) {
   return (

@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { setFormData } from "../../../store/slice";
 import Image from "next/image";
-import Step from "../../Components/Step";
-import Error from "../../Components/Error";
+import Step from "../(Components)/Step";
+import Error from "../(Components)/Error";
 import { FormInputs } from "../../../src/types";
 import { userFormfields, imgUrl } from "../../assets/enum";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
-import { CommerceFormInputs } from "../types";
+import { CommerceFormInputs } from "../../types";
 
 type UrlInputProps = {
   register: UseFormRegister<CommerceFormInputs>;

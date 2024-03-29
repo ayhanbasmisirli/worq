@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setFormData } from "../../../store/slice";
 import Image from "next/image";
-import Step from "../../Components/Step";
+import Step from "../(Components)/Step";
 import { usePathname } from "next/navigation";
-import UrlInput from "../../Components/UrlInput";
+import UrlInput from "../(Components)/UrlInput";
 import { imgUrl, platforms } from "../../assets/enum";
-import Error from "../../Components/Error";
+import Error from "../(Components)/Error";
 import { CommerceFormInputs } from "../../../src/types";
 
 function CommerceForm() {
