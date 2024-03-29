@@ -1,88 +1,80 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { setFormData } from "../../../store/slice";
 import Image from "next/image";
+import Step from "../../Components/Step";
+import Error from "../../Components/Error";
+import { FormInputs } from "../../../src/types";
+import { userFormfields, imgUrl } from "../../assets/enum";
 
 function UserForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormInputs>();
+
   const dispatch = useDispatch();
   const router = useRouter();
-  const onSubmit = (data) => {
+  const pathname = usePathname();
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     dispatch(setFormData(data));
     router.push("/CommerceForm");
+    reset();
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="card  card-side w-120 bg-base-100 shadow-xl m-50">
+    <div className="flex justify-center items-center h-screen flex-col">
+      <div className="card card-side w-120 bg-base-100 shadow-xl m-10">
         <figure>
           <Image
-            src="https://assets-global.website-files.com/629898333cd8b9941adf699f/62baa0b7a5a9f2e43f60623b_worq-company-logo-1.svg"
+            src={imgUrl}
             height={56}
             width={56}
             alt="logo"
             className="p-2 m-2"
+            priority={true}
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">User Info</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <label className="input input-bordered flex items-center gap-2 mb-2">
-              First Name:
-              <input
-                {...register("firstname", { required: true })}
-                type="text"
-                className="grow"
-                placeholder="First Name"
-              />
-            </label>
-
-            <label className="input input-bordered flex items-center gap-2 mb-2">
-              Last Name:
-              <input
-                {...register("lastname", { required: true })}
-                type="text"
-                className="grow"
-                placeholder="Last Name"
-              />
-            </label>
-
-            <label className="input input-bordered flex items-center gap-2 mb-2">
-              Email:
-              <input
-                {...register("email", { required: true })}
-                type="text"
-                className="grow"
-                placeholder="Email"
-              />
-            </label>
-            <label className="input input-bordered flex items-center gap-2 mb-2">
-              Phone
-              <input
-                {...register("phone", { required: true })}
-                type="text"
-                className="grow"
-                placeholder="Phone"
-              />
-            </label>
+            {userFormfields.map(({ name, label, type }) => (
+              <label
+                key={name}
+                className="input input-bordered flex items-center gap-2 mb-2"
+              >
+                {label}:
+                <input
+                  {...register(
+                    name as "firstname" | "lastname" | "email" | "phone",
+                    { required: true }
+                  )}
+                  type={type}
+                  className="grow"
+                  placeholder={label}
+                />
+              </label>
+            ))}
             <div className="card-actions justify-end">
               <input
                 type="submit"
                 value="Next"
                 style={{ backgroundColor: "#016271" }}
-                className="btn btn-square  px-10 bg-color-['#016271'] text-white"
+                className="btn btn-square px-10 bg-color-['#016271'] text-white"
               />
             </div>
           </form>
         </div>
       </div>
+      <Step path={pathname} />
+      {userFormfields.map(({ name }) => (
+        <Error key={name} fieldName={name} errors={errors} />
+      ))}
     </div>
   );
 }

@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setFormData } from "../../../store/slice";
 import Image from "next/image";
+import Step from "../../Components/Step";
+import { usePathname } from "next/navigation";
+import UrlInput from "../../Components/UrlInput";
+import { imgUrl, platforms } from "../../assets/enum";
+import Error from "../../Components/Error";
+
 function CommerceForm() {
   const {
     register,
@@ -13,63 +19,59 @@ function CommerceForm() {
   } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
+
   const onSubmit = (data) => {
     dispatch(setFormData(data));
     router.push("/Result");
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="card  card-side w-120 bg-base-100 shadow-xl">
+    <div className="flex justify-center items-center h-screen flex-col">
+      <div className="card card-side w-120 bg-base-100 shadow-xl mb-10">
         <figure>
           <Image
-            src="https://assets-global.website-files.com/629898333cd8b9941adf699f/62baa0b7a5a9f2e43f60623b_worq-company-logo-1.svg"
-            width={10}
-            height={10}
+            src={imgUrl}
+            width={56}
+            height={56}
             alt="logo"
             className="p-2 m-2"
+            priority
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">Commerce Info</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <label className="input input-bordered flex items-center gap-2 mb-2">
-              Commercial URL:
-              <input
-                {...register("url", { required: true })}
-                type="text"
-                className="grow"
-                placeholder="Commercial URL"
-                id="url"
-              />
-            </label>
-
-            <label className="border border-r p-2 rounded-lg flex items-center gap-2 mb-2">
-              Platform:
+            <UrlInput register={register} />
+            <div className="border border-r p-2 rounded-lg flex items-center gap-2 mb-2 place-content-between">
+              <label htmlFor="commerceplatform" className="label">
+                Platform:
+              </label>
               <select
+                id="commerceplatform"
                 {...register("commerceplatform", { required: true })}
-                className="select select-info w-full max-w-xs"
+                className="select select-bordered w-full max-w-xs"
               >
-                <option disabled selected>
-                  Select Platform
-                </option>
-                <option value="Hepsiburada">Hepsi Burada</option>
-                <option value="Amazon">Amazon</option>
-                <option value="Trendyol">Trendyol</option>
+                <option disabled>Select Platform</option>
+                {platforms.map((platform) => (
+                  <option key={platform.value} value={platform.value}>
+                    {platform.label}
+                  </option>
+                ))}
               </select>
-            </label>
+            </div>
             <div className="card-actions justify-end">
               <input
                 type="submit"
-                style={{ backgroundColor: "#016271" }}
-                className="btn btn-square  px-10 bg-color-['#016271'] text-white"
+                value="Submit"
+                className="btn btn-square px-10 bg-color-['#016271'] text-white"
               />
             </div>
           </form>
         </div>
       </div>
+      <Step path={pathname} />
+      <Error fieldName="url" errors={errors} />
     </div>
   );
 }
-
 export default CommerceForm;
