@@ -3,15 +3,19 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { imgUrl } from "@/assets/enum";
+import { RootState } from "@/types";
 function FormSuccesion() {
-  const result = useSelector((state) => state.UserInfoSlice.formData);
+  const result = useSelector(
+    (state: RootState) => state.UserInfoSlice.formData
+  );
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure className="px-10 pt-10">
           <Image
-            src="https://assets-global.website-files.com/629898333cd8b9941adf699f/62baa0b7a5a9f2e43f60623b_worq-company-logo-1.svg"
+            src={imgUrl}
             height={128}
             width={256}
             alt="logo"
