@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setFormData } from "../../../store/slice";
@@ -10,18 +10,19 @@ import { usePathname } from "next/navigation";
 import UrlInput from "../../Components/UrlInput";
 import { imgUrl, platforms } from "../../assets/enum";
 import Error from "../../Components/Error";
+import { CommerceFormInputs } from "../../../src/types";
 
 function CommerceForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<CommerceFormInputs>();
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<CommerceFormInputs> = (data) => {
     dispatch(setFormData(data));
     router.push("/Result");
   };
@@ -50,6 +51,7 @@ function CommerceForm() {
                 id="commerceplatform"
                 {...register("commerceplatform", { required: true })}
                 className="select select-bordered w-full max-w-xs"
+                defaultValue={"Select Platform"}
               >
                 <option disabled>Select Platform</option>
                 {platforms.map((platform) => (
@@ -62,8 +64,8 @@ function CommerceForm() {
             <div className="card-actions justify-end">
               <input
                 type="submit"
-                value="Submit"
-                className="btn btn-square px-10 bg-color-['#016271'] text-white"
+                style={{ backgroundColor: "#016271" }}
+                className="btn btn-square  px-10 bg-color-['#016271'] text-white"
               />
             </div>
           </form>

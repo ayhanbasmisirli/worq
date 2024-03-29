@@ -6,6 +6,11 @@ export type FormInputs = {
     phone: number;
 };
 
+export type CommerceFormInputs = {
+    commerceplatform: string;
+    url: string;
+};
+
 export type ErrorProps = {
     fieldName: string;
     errors: FieldErrors<FormInputs>;
